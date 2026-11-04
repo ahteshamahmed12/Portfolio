@@ -1,0 +1,343 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Header bottom glow line */
+.header-glow::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(152, 87, 211, 0.3) 25%,
+    rgba(152, 87, 211, 0.6) 50%,
+    rgba(152, 87, 211, 0.3) 75%,
+    transparent 100%
+  );
+}
+
+/* Nav link entrance animation */
+@keyframes nav-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.nav-link {
+  animation: nav-fade-in 0.6s ease-out both;
+}
+
+/* Custom transition duration for underline */
+@layer utilities {
+  .duration-400 {
+    transition-duration: 400ms;
+  }
+}
+
+/* Footer top glow line */
+.footer-glow-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(152, 87, 211, 0.3) 25%,
+    rgba(152, 87, 211, 0.6) 50%,
+    rgba(152, 87, 211, 0.3) 75%,
+    transparent 100%
+  );
+}
+
+/* Footer section fade-in */
+@keyframes footer-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.footer-fade-in {
+  animation: footer-fade-in 0.7s ease-out both;
+}
+
+/* Social icon entrance */
+.social-icon {
+  animation: nav-fade-in 0.5s ease-out both;
+}
+
+/* Ambient floating orbs */
+@keyframes orb-float {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-20px) scale(1.05); }
+}
+
+.footer-orb {
+  animation: orb-float 8s ease-in-out infinite;
+}
+
+.footer-orb-delayed {
+  animation: orb-float 10s ease-in-out 2s infinite;
+}
+
+/* =========================================================
+   HERO SECTION
+   ========================================================= */
+
+/* Entrance */
+@keyframes hero-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-fade-up {
+  animation: hero-fade-up 0.8s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+/* Ambient orbs reuse the footer float */
+.hero-orb {
+  animation: orb-float 9s ease-in-out infinite;
+}
+
+.hero-orb-delayed {
+  animation: orb-float 11s ease-in-out 1.5s infinite;
+}
+
+/* Faint grid texture, faded out toward the edges */
+.hero-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.7) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.7) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 15%, transparent 72%);
+  mask-image: radial-gradient(ellipse at center, #000 15%, transparent 72%);
+}
+
+/* Rotating role title — replayed because React remounts on key change */
+@keyframes role-flip {
+  0% {
+    opacity: 0;
+    transform: translateY(55%) rotateX(-75deg);
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotateX(0deg);
+  }
+}
+
+.role-flip {
+  animation: role-flip 0.65s cubic-bezier(0.23, 1, 0.32, 1) both;
+  transform-origin: center bottom;
+  backface-visibility: hidden;
+}
+
+/* ---- Buttons: 3D lift + press ---- */
+.btn-3d {
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition:
+    transform 0.35s cubic-bezier(0.23, 1, 0.32, 1),
+    box-shadow 0.35s ease,
+    border-color 0.35s ease,
+    background-color 0.35s ease;
+}
+
+.btn-3d:hover {
+  transform: perspective(900px) translateY(-3px) rotateX(7deg) scale(1.03);
+}
+
+.btn-3d:active {
+  transform: perspective(900px) translateY(0) rotateX(0deg) scale(0.975);
+  transition-duration: 0.1s;
+}
+
+.btn-3d:focus-visible {
+  outline: 2px solid rgba(192, 132, 252, 0.8);
+  outline-offset: 3px;
+}
+
+/* ---- Image card ---- */
+/* Perspective lives on the parent so the tilt reads in 3D */
+.hero-float {
+  perspective: 1200px;
+  animation: hero-float 7s ease-in-out infinite;
+}
+
+@keyframes hero-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+
+.hero-tilt {
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.hero-tilt:hover {
+  transform: rotateX(6deg) rotateY(-9deg) translateY(-6px) scale(1.025);
+}
+
+.hero-image-pop {
+  animation: hero-image-pop 1s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+@keyframes hero-image-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.86);
+  }
+  to {
+    opacity: 1;
+    transform: scale(0.95);
+  }
+}
+
+/* Glow behind the card */
+.hero-glow-pulse {
+  animation: hero-glow-pulse 5s ease-in-out infinite;
+}
+
+@keyframes hero-glow-pulse {
+  0%, 100% { opacity: 0.45; transform: scale(0.96); }
+  50% { opacity: 0.85; transform: scale(1.04); }
+}
+
+/* Rotating conic border — animated with a registered angle so the
+   ring itself never rotates, only the highlight travelling around it */
+@property --hero-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.hero-spin-ring {
+  background: conic-gradient(
+    from var(--hero-angle),
+    rgba(152, 87, 211, 0) 0deg,
+    rgba(152, 87, 211, 0.85) 45deg,
+    rgba(192, 132, 252, 1) 80deg,
+    rgba(152, 87, 211, 0) 150deg,
+    rgba(152, 87, 211, 0) 360deg
+  );
+  padding: 1.5px;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: hero-angle-spin 6s linear infinite;
+}
+
+@keyframes hero-angle-spin {
+  to { --hero-angle: 360deg; }
+}
+
+/* Floating status chip */
+.hero-chip {
+  animation: hero-chip-in 0.9s cubic-bezier(0.23, 1, 0.32, 1) 0.5s both,
+             hero-float 6s ease-in-out 1.4s infinite;
+}
+
+@keyframes hero-chip-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =========================================================
+   SKILLS SECTION
+   ========================================================= */
+
+/* Tool tile entrance */
+.skill-tile {
+  animation: skill-tile-in 0.6s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+@keyframes skill-tile-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .hero-fade-up,
+  .role-flip,
+  .hero-image-pop,
+  .hero-glow-pulse,
+  .hero-spin-ring,
+  .hero-float,
+  .hero-orb,
+  .hero-orb-delayed,
+  .hero-chip,
+  .skill-tile {
+    animation: none !important;
+  }
+
+  .btn-3d:hover,
+  .btn-3d:active,
+  .hero-tilt:hover {
+    transform: none !important;
+  }
+}
